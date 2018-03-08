@@ -21,31 +21,51 @@ public class Game {
     public static void main(String[] args) {
 
         setCode();
+        //Set the code to 9, 0, 8, 1 for testing purposes.  Will delete this code when the algorithm is finished.
+        code[0] = 9;
+        code[1] = 0;
+        code[2] = 8;
+        code[3] = 1;
+        //Print the code for debugging purposes.
         System.out.println(Arrays.toString(code));
-        int correctNumCount = 0;
-        int correctNumbers[] = {0, 0, 0, 0};
 
+        //Create a counter to keep track of how many numbers we know are correct.
+        int correctNumCount = 0;
+
+        //Create an array where we can store numbers that we know are correct.
+        //Start with 20 in every position so that we can easily see when a number is replaced.
+        int correctNumbers[] = {20, 20, 20, 20};
+
+        //Start by guessing "0, 0, 0, 0"
         int[] aGuess = {0, 0, 0, 0};
         String getAnswer = checkresult(aGuess);
         int getStarCount = countChars('*', getAnswer);
         int getDashCount = countChars('-', getAnswer);
+        //Print this stuff for debugging purposes.
         System.out.println(Arrays.toString(aGuess));
         System.out.println(getStarCount);
         System.out.println(getDashCount);
         System.out.println();
 
+        //If we get a star, we know that one of the numbers is a 0, now we need to know where it goes.
         if (getStarCount == 1) {
+
+            //Start by guessing with a 0 in the first position, with numbers that we know aren't correct in the other positions.
             aGuess[0] = 0;
             aGuess[1] = 10;
             aGuess[2] = 10;
             aGuess[3] = 10;
             getAnswer = checkresult(aGuess);
             getStarCount = countChars('*', getAnswer);
-            getDashCount = countChars('-', getAnswer);
 
+            //If we get a star, we know that the number is in the correct position.  We'll put a 0 in the first position of the array.
+            //We'll also increment our correctNumCount variable because we've found our first correct number.
             if (getStarCount == 1) {
-                correctNumbers[correctNumCount] = 0;
+                correctNumbers[0] = 0;
                 correctNumCount++;
+
+            //If we didn't get a star, we need to try a 0 in the second position.
+            //We'll repeat this process 4 times.  As soon as we get a star, we'll put a 0 in the appropriate position.
             } else if (getStarCount == 0) {
                 aGuess[0] = 10;
                 aGuess[1] = 0;
@@ -53,10 +73,9 @@ public class Game {
                 aGuess[3] = 10;
                 getAnswer = checkresult(aGuess);
                 getStarCount = countChars('*', getAnswer);
-                getDashCount = countChars('-', getAnswer);
 
                 if (getStarCount == 1) {
-                    correctNumbers[correctNumCount] = 0;
+                    correctNumbers[1] = 0;
                     correctNumCount++;
                 } else if (getStarCount == 0) {
                     aGuess[0] = 10;
@@ -65,10 +84,9 @@ public class Game {
                     aGuess[3] = 10;
                     getAnswer = checkresult(aGuess);
                     getStarCount = countChars('*', getAnswer);
-                    getDashCount = countChars('-', getAnswer);
 
                     if (getStarCount == 1) {
-                        correctNumbers[correctNumCount] = 0;
+                        correctNumbers[2] = 0;
                         correctNumCount++;
                     } else if (getStarCount == 0) {
                         aGuess[0] = 10;
@@ -77,19 +95,20 @@ public class Game {
                         aGuess[3] = 0;
                         getAnswer = checkresult(aGuess);
                         getStarCount = countChars('*', getAnswer);
-                        getDashCount = countChars('-', getAnswer);
 
                         if (getStarCount == 1) {
-                            correctNumbers[correctNumCount] = 0;
+                            correctNumbers[3] = 0;
                             correctNumCount++;
                         }
                     }
                 }
             }
-
-            System.out.println(Arrays.toString(correctNumbers));
+            //At this point, we'll know if a 0 is one of the numbers, and if so, where it goes.
+            //Print the correct numbers array for debugging purposes.
+            System.out.println("Correct numbers so far: " + Arrays.toString(correctNumbers));
+            System.out.println();
         }
-
+            //Now, we'll guess 1,1,1,1 and repeat the process.  We'll do this through the number 9 and then we'll have all 4 numbers in the correct positions.
             aGuess[0] = 1;
             aGuess[1] = 1;
             aGuess[2] = 1;
@@ -109,10 +128,9 @@ public class Game {
                 aGuess[3] = 10;
                 getAnswer = checkresult(aGuess);
                 getStarCount = countChars('*', getAnswer);
-                getDashCount = countChars('-', getAnswer);
 
                 if (getStarCount == 1) {
-                    correctNumbers[correctNumCount] = 1;
+                    correctNumbers[0] = 1;
                     correctNumCount++;
                 } else if (getStarCount == 0) {
                     aGuess[0] = 10;
@@ -121,10 +139,9 @@ public class Game {
                     aGuess[3] = 10;
                     getAnswer = checkresult(aGuess);
                     getStarCount = countChars('*', getAnswer);
-                    getDashCount = countChars('-', getAnswer);
 
                     if (getStarCount == 1) {
-                        correctNumbers[correctNumCount] = 1;
+                        correctNumbers[1] = 1;
                         correctNumCount++;
                     } else if (getStarCount == 0) {
                         aGuess[0] = 10;
@@ -133,10 +150,9 @@ public class Game {
                         aGuess[3] = 10;
                         getAnswer = checkresult(aGuess);
                         getStarCount = countChars('*', getAnswer);
-                        getDashCount = countChars('-', getAnswer);
 
                         if (getStarCount == 1) {
-                            correctNumbers[correctNumCount] = 1;
+                            correctNumbers[2] = 1;
                             correctNumCount++;
                         } else if (getStarCount == 0) {
                             aGuess[0] = 10;
@@ -145,47 +161,23 @@ public class Game {
                             aGuess[3] = 1;
                             getAnswer = checkresult(aGuess);
                             getStarCount = countChars('*', getAnswer);
-                            getDashCount = countChars('-', getAnswer);
 
                             if (getStarCount == 1) {
-                                correctNumbers[correctNumCount] = 1;
+                                correctNumbers[3] = 1;
                                 correctNumCount++;
                             }
                         }
                     }
                 }
 
-                System.out.println(Arrays.toString(correctNumbers));
+                System.out.println("Correct numbers so far: " + Arrays.toString(correctNumbers));
+                System.out.println();
             }
     }
 
-
-
-
-    /*    for (int y = 0; y < 9; y++) {
-            aGuess[0] = aGuess[0] + 1;
-            aGuess[1] = aGuess[1] + 1;
-            aGuess[2] = aGuess[2] + 1;
-            aGuess[3] = aGuess[3] + 1;
-            getAnswer = checkresult(aGuess);
-            getStarCount = countChars('*', getAnswer);
-            getDashCount = countChars('-', getAnswer);
-            System.out.println(Arrays.toString(aGuess));
-            System.out.println(getStarCount);
-            System.out.println(getDashCount);
-            System.out.println();
-        }
-
-           /*  aGuess[0] = (aGuess[0] + 1);
-            aGuess[1] = (aGuess[1] + 1);
-            aGuess[2] = (aGuess[2] + 1);
-            aGuess[3] = (aGuess[3] + 1);
-
-            System.out.println(checkresult(aGuess));
-            System.out.println("This is guess: " + x);
-            System.out.println(Arrays.toString(aGuess));
-
-            */
+    //Need to add logic for 2+ stars.
+    //Need to stop guessing when correctNumCount = 4
+    //Need to track guesses and average guesses.
 
     // Create a loop to continue guessing and implement codebreaker logic
     // Include a counter to determine how many attempts it took to break the code.
@@ -194,9 +186,6 @@ public class Game {
     // Example combination = 1234 guess = 1400 result = "*-"
     // countChars is a method that returns the number of times a character appears in a string
     // Example countChars("daddy",'d') returns 3
-
-//        int[] guess = {2,2,3,4};
-//        System.out.println(checkresult(guess));
 
     protected static String checkresult(int[] aGuess) {
         {
