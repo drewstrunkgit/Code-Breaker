@@ -19,185 +19,84 @@ public class Game {
     }
 
     public static void main(String[] args) {
+        //Declare a variable for the minimum number of guesses.
+        int minGuesses = 1;
+        //Declare a variable for the maximum number of guesses.
+        int maxGuesses = 0;
+        //Declare a variable for the total number of guesses.
+        int sumGuesses = 0;
 
-        setCode();
-        //Set the code to 9, 0, 8, 1 for testing purposes.  Will delete this code when the algorithm is finished.
-        code[0] = 9;
-        code[1] = 0;
-        code[2] = 8;
-        code[3] = 1;
-        //Print the code for debugging purposes.
-        System.out.println(Arrays.toString(code));
+        //To calculate the average over 10,000 attempts, we'll run the entire CodeBreaker game 10,000 times.
+        for (int z = 0; z < 10000; z++) {
+            //Sets the code to a random 4 digit number.
+            setCode();
 
-        //Create a counter to keep track of how many numbers we know are correct.
-        int correctNumCount = 0;
+            //Create a counter to keep track of how many numbers we know are correct.
+            int correctNumCount = 0;
 
-        //Create an array where we can store numbers that we know are correct.
-        //Start with 20 in every position so that we can easily see when a number is replaced.
-        int correctNumbers[] = {20, 20, 20, 20};
+            //Create a counter to keep track of the number of guesses for each attempt.
+            int numGuesses = 0;
 
-        //Start by guessing "0, 0, 0, 0"
-        int[] aGuess = {0, 0, 0, 0};
-        //Declare variables for checking our results and getting our star and dash counts.
-        String getAnswer = checkresult(aGuess);
-        int getStarCount = countChars('*', getAnswer);
-        int getDashCount = countChars('-', getAnswer);
-        //Print this stuff for debugging purposes.
-        System.out.println(Arrays.toString(aGuess));
-        System.out.println(getStarCount);
-        System.out.println(getDashCount);
-        System.out.println();
+            //Create an array where we can store numbers that we know are correct.
+            //Start with 20 in every position so that we can easily see when a number is replaced while debugging.
+            int correctNumbers[] = {20, 20, 20, 20};
 
-        //If we get a star, we know that one of the numbers is a 0, now we need to know where it goes.
-        if (getStarCount == 1) {
-
-            for (int x = 0; x < aGuess.length; x++) {
-                aGuess[0] = 10;
-                aGuess[1] = 10;
-                aGuess[2] = 10;
-                aGuess[3] = 10;
-
-                aGuess[x] = 0;
-                getAnswer = checkresult(aGuess);
-                getStarCount = countChars('*', getAnswer);
-
-                if (getStarCount == 1) {
-                    correctNumbers[x] = 0;
-                    correctNumCount++;
-                }
-            }
-            System.out.println("The correct numbers so far are: " + Arrays.toString(correctNumbers));
-        }
-    }
-            //Start by guessing with a 0 in the first position, with numbers that we know aren't correct in the other positions.
-            /*
-            aGuess[0] = 0;
-            aGuess[1] = 10;
-            aGuess[2] = 10;
-            aGuess[3] = 10;
-            getAnswer = checkresult(aGuess);
-            getStarCount = countChars('*', getAnswer);
-
-            //If we get a star, we know that the number is in the correct position.  We'll put a 0 in the first position of the array.
-            //We'll also increment our correctNumCount variable because we've found our first correct number.
-            if (getStarCount == 1) {
-                correctNumbers[0] = 0;
-                correctNumCount++;
-
-            //If we didn't get a star, we need to try a 0 in the second position.
-            //We'll repeat this process 4 times.  As soon as we get a star, we'll put a 0 in the appropriate position.
-            } else if (getStarCount == 0) {
-                aGuess[0] = 10;
-                aGuess[1] = 0;
-                aGuess[2] = 10;
-                aGuess[3] = 10;
-                getAnswer = checkresult(aGuess);
-                getStarCount = countChars('*', getAnswer);
-
-                if (getStarCount == 1) {
-                    correctNumbers[1] = 0;
-                    correctNumCount++;
-                } else if (getStarCount == 0) {
-                    aGuess[0] = 10;
-                    aGuess[1] = 10;
-                    aGuess[2] = 0;
-                    aGuess[3] = 10;
-                    getAnswer = checkresult(aGuess);
-                    getStarCount = countChars('*', getAnswer);
-
-                    if (getStarCount == 1) {
-                        correctNumbers[2] = 0;
-                        correctNumCount++;
-                    } else if (getStarCount == 0) {
+            //We want to run the code that figures out our numbers and their position 9 times, once for each number.
+            for (int y = 0; y < 10; y++) {
+                //Create our aGuess array and assign each position to the value that is our loop variable. 0,0,0,0, then 1,1,1,1, etc.
+                int[] aGuess = {y, y, y, y};
+                //Declare variables for checking our results and getting our star count.
+                String getAnswer = checkresult(aGuess);
+                int getStarCount = countChars('*', getAnswer);
+                //Whenever we make a guess using checkresult we want to increment our number of guesses by 1.
+                numGuesses++;
+                //If we get a star, we know that at least one of the numbers is a 0, now we need to know where it goes.
+                if (getStarCount > 0) {
+                    //We want to run this code for each position in the Array.
+                    for (int x = 0; x < aGuess.length; x++) {
+                        //Start by putting 10 into every position in the aGuess array.
                         aGuess[0] = 10;
                         aGuess[1] = 10;
                         aGuess[2] = 10;
-                        aGuess[3] = 0;
-                        getAnswer = checkresult(aGuess);
-                        getStarCount = countChars('*', getAnswer);
-
-                        if (getStarCount == 1) {
-                            correctNumbers[3] = 0;
-                            correctNumCount++;
-                        }
-                    }
-                }
-            }
-            //At this point, we'll know if a 0 is one of the numbers, and if so, where it goes.
-            //Print the correctNumbers array for debugging purposes.
-            System.out.println("Correct numbers so far: " + Arrays.toString(correctNumbers));
-            System.out.println();
-        }
-            //Now, we'll guess 1,1,1,1 and repeat the process.  We'll do this through the number 9 and then we'll have all 4 numbers in the correct positions.
-            aGuess[0] = 1;
-            aGuess[1] = 1;
-            aGuess[2] = 1;
-            aGuess[3] = 1;
-            getAnswer = checkresult(aGuess);
-            getStarCount = countChars('*', getAnswer);
-            getDashCount = countChars('-', getAnswer);
-            System.out.println(Arrays.toString(aGuess));
-            System.out.println(getStarCount);
-            System.out.println(getDashCount);
-            System.out.println();
-
-            if (getStarCount == 1) {
-                aGuess[0] = 1;
-                aGuess[1] = 10;
-                aGuess[2] = 10;
-                aGuess[3] = 10;
-                getAnswer = checkresult(aGuess);
-                getStarCount = countChars('*', getAnswer);
-
-                if (getStarCount == 1) {
-                    correctNumbers[0] = 1;
-                    correctNumCount++;
-                } else if (getStarCount == 0) {
-                    aGuess[0] = 10;
-                    aGuess[1] = 1;
-                    aGuess[2] = 10;
-                    aGuess[3] = 10;
-                    getAnswer = checkresult(aGuess);
-                    getStarCount = countChars('*', getAnswer);
-
-                    if (getStarCount == 1) {
-                        correctNumbers[1] = 1;
-                        correctNumCount++;
-                    } else if (getStarCount == 0) {
-                        aGuess[0] = 10;
-                        aGuess[1] = 10;
-                        aGuess[2] = 1;
                         aGuess[3] = 10;
+
+                        //Change the value of whichever position we are currently at to the value in our outside loop (0-9)
+                        aGuess[x] = y;
                         getAnswer = checkresult(aGuess);
+                        numGuesses++;
                         getStarCount = countChars('*', getAnswer);
 
+                        //If we get a star, we know that the position we are at is where the number goes.
+                        //Assign the position we are at to the value in our outside loop (0-9)
                         if (getStarCount == 1) {
-                            correctNumbers[2] = 1;
+                            correctNumbers[x] = y;
                             correctNumCount++;
-                        } else if (getStarCount == 0) {
-                            aGuess[0] = 10;
-                            aGuess[1] = 10;
-                            aGuess[2] = 10;
-                            aGuess[3] = 1;
-                            getAnswer = checkresult(aGuess);
-                            getStarCount = countChars('*', getAnswer);
-
-                            if (getStarCount == 1) {
-                                correctNumbers[3] = 1;
-                                correctNumCount++;
-                            }
                         }
                     }
                 }
-
-                System.out.println("Correct numbers so far: " + Arrays.toString(correctNumbers));
-                System.out.println();
+                //If the number of guesses in this attempt is less than the current minimum guesses, this number of guesses is our new minimum.
+                if (numGuesses < minGuesses) {
+                    minGuesses = numGuesses;
+                }
+                //If the number of guesses in this attempt is greater than the current maximum guesses, this number of guesses is our new maximum.
+                if (numGuesses > maxGuesses) {
+                    maxGuesses = numGuesses;
+                }
+                //Once we have figured out all 4 numbers, stop guessing.
+                if (correctNumCount == 4) {
+                    break;
+                }
             }
+            //Add the number of guesses from this attempt to the total number of guesses.
+            sumGuesses = (sumGuesses + numGuesses);
+        }
+        //Print our minimum number of guesses.
+        System.out.println("Minimum number of guesses: " + minGuesses);
+        //Print our maximum number of guesses.
+        System.out.println("Maximum number of guesses: " + maxGuesses);
+        //Print our average number of guesses.
+        System.out.println("The average number of guesses is: " + (sumGuesses / 10000));
     }
-    */
-    //Need to add logic for 2+ stars.
-    //Need to stop guessing when correctNumCount = 4
-    //Need to track guesses and average guesses.
 
     // Create a loop to continue guessing and implement codebreaker logic
     // Include a counter to determine how many attempts it took to break the code.
