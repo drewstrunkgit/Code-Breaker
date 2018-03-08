@@ -38,6 +38,7 @@ public class Game {
 
         //Start by guessing "0, 0, 0, 0"
         int[] aGuess = {0, 0, 0, 0};
+        //Declare variables for checking our results and getting our star and dash counts.
         String getAnswer = checkresult(aGuess);
         int getStarCount = countChars('*', getAnswer);
         int getDashCount = countChars('-', getAnswer);
@@ -50,7 +51,26 @@ public class Game {
         //If we get a star, we know that one of the numbers is a 0, now we need to know where it goes.
         if (getStarCount == 1) {
 
+            for (int x = 0; x < aGuess.length; x++) {
+                aGuess[0] = 10;
+                aGuess[1] = 10;
+                aGuess[2] = 10;
+                aGuess[3] = 10;
+
+                aGuess[x] = 0;
+                getAnswer = checkresult(aGuess);
+                getStarCount = countChars('*', getAnswer);
+
+                if (getStarCount == 1) {
+                    correctNumbers[x] = 0;
+                    correctNumCount++;
+                }
+            }
+            System.out.println("The correct numbers so far are: " + Arrays.toString(correctNumbers));
+        }
+    }
             //Start by guessing with a 0 in the first position, with numbers that we know aren't correct in the other positions.
+            /*
             aGuess[0] = 0;
             aGuess[1] = 10;
             aGuess[2] = 10;
@@ -104,7 +124,7 @@ public class Game {
                 }
             }
             //At this point, we'll know if a 0 is one of the numbers, and if so, where it goes.
-            //Print the correct numbers array for debugging purposes.
+            //Print the correctNumbers array for debugging purposes.
             System.out.println("Correct numbers so far: " + Arrays.toString(correctNumbers));
             System.out.println();
         }
@@ -174,7 +194,7 @@ public class Game {
                 System.out.println();
             }
     }
-
+    */
     //Need to add logic for 2+ stars.
     //Need to stop guessing when correctNumCount = 4
     //Need to track guesses and average guesses.
