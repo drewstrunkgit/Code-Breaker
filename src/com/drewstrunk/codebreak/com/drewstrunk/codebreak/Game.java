@@ -54,7 +54,10 @@ public class Game {
                 if (getStarCount > 0) {
                     //We want to run this code for each position in the Array.
                     for (int x = 0; x < aGuess.length; x++) {
+                        //Create a variable where we can store the number of stars we started with
+                        //so that we know how many positions we need to solve in this loop.
                         int thisStarCount = getStarCount;
+                        //Create a variable where we can track the number of correct numbers we've figured out in this loop.
                         int correctGuessCounter = 0;
                         //Start by putting 10 into every position in the aGuess array.
                         aGuess[0] = 10;
@@ -62,7 +65,7 @@ public class Game {
                         aGuess[2] = 10;
                         aGuess[3] = 10;
 
-                        //Change the value of whichever position we are currently at to the value in our outside loop (0-9)
+                        //Change the value of whichever position we are currently at to the value in our outside loop, then guess. (0-9)
                         aGuess[x] = y;
                         getAnswer = checkresult(aGuess);
                         numGuesses++;
@@ -73,8 +76,10 @@ public class Game {
                         if (getStarCount == 1) {
                             correctNumbers[x] = y;
                             correctNumCount++;
+                            //Whenever we figure out a number, we'll increment our guess counter by 1.
                             correctGuessCounter++;
                         }
+                        //As soon as the number of correct guesses equals the starting star count, we no longer need to guess in this loop.
                         if (correctGuessCounter == thisStarCount) {
                             break;
                         }
