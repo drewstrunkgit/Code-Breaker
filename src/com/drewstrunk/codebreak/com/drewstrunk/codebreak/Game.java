@@ -54,6 +54,8 @@ public class Game {
                 if (getStarCount > 0) {
                     //We want to run this code for each position in the Array.
                     for (int x = 0; x < aGuess.length; x++) {
+                        int thisStarCount = getStarCount;
+                        int correctGuessCounter = 0;
                         //Start by putting 10 into every position in the aGuess array.
                         aGuess[0] = 10;
                         aGuess[1] = 10;
@@ -71,6 +73,10 @@ public class Game {
                         if (getStarCount == 1) {
                             correctNumbers[x] = y;
                             correctNumCount++;
+                            correctGuessCounter++;
+                        }
+                        if (correctGuessCounter == thisStarCount) {
+                            break;
                         }
                     }
                 }
